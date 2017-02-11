@@ -21,7 +21,11 @@
 	stroke-width:2px;
 }
 
-
+.state-line {
+	fill:none;
+	stroke:#CCCCCC;
+	stroke-width:1px;
+}
 /* Style The Dropdown Button */
 .dropbtn {
     background-color: rgba(245,128,37,0.7);

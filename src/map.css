@@ -96,7 +96,8 @@
 
 #divVar {
 	position: absolute;
-	left:300px;
+	width:180px;
+	left:320px;
 }
 
 #controls {

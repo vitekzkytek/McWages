@@ -1,5 +1,5 @@
 
-//ToDo - tooltip, doladeni hoveru, handling NAs, PRIDEJ HONKKONG, SINGAPUR mozna brunei, 
+//ToDo - doladeni hoveru, doladeni tooltip textu, handling NAs, PRIDEJ HONKKONG, SINGAPUR mozna brunei, 
 // v mape uplne chybi Bahrain, musim ho dokreslit - vzhledem k tomu, ze to ani nespadlo, tak to asi budu muset zkontrolovat		
 
 var year = 2016;
@@ -21,7 +21,6 @@ function getMax(countries, year,varName) {
     return max;
 };
 
-
 function getMin(countries, year,varName) {
     var min;
     for (var country in countries)    {
@@ -30,7 +29,6 @@ function getMin(countries, year,varName) {
     }
     return min;
 };
-
 
 function changeYear(xYear)
 {
@@ -54,9 +52,17 @@ function LoadMap()
 	cols = ['rgba(247,128,37,0.3)','rgba(247,128,37,1)']
 	$.each(data.Countries,function(d)
 		{
-			//zamysli se jestli budes loadovat vzdycky znovu, nebo budes muset po zmene promenne ci roku odebrat u tech, kde nic neni
 			val = this[year][varName]
-			$('#' +d).css('fill',getColorFromValue(val,dom,cols));
+			if(val != 'NA')
+				{
+					$('#' +d).css('fill',getColorFromValue(val,dom,cols));
+				}
+			else
+				{
+					$('#' + d).css('fill','#CCCCCC')
+				}
+			
+			
 		}
     );
 	handleEvents();
@@ -77,9 +83,6 @@ function TransformZoom(s,ZoomName){
 			$('#zoomOutBtn').css('display','none')
 		}
 };
-
-//define tooltip
-
 
 function handleEvents()
 {
@@ -110,11 +113,6 @@ function handleEvents()
 };
 
 function getTooltipText(el){
-	if (data.Countries.hasOwnProperty(el)){
-		var s = "<b>" + data.Countries[el].FullName + "</b>";
-	}
-	else {
-		s = 'no data'
-	}
+	var s = "<b>" + data.Countries[el].FullName + "</b>";
 	return s
 }

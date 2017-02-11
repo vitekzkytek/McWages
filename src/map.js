@@ -2,6 +2,9 @@
 //ToDo - DDL pro year a variable,tooltip, dat na github, doladeni hoveru, handling NAs, PRIDEJ HONKKONG, SINGAPUR mozna brunei, 
 // v mape uplne chybi Bahrain, musim ho dokreslit - vzhledem k tomu, ze to ani nespadlo, tak to asi budu muset zkontrolovat		
 
+var year = 2016;
+var varName = 'BMPH'
+
 
 function getColorFromValue(val,dom,cols)
 {
@@ -19,6 +22,7 @@ function getMax(countries, year,varName) {
     return max;
 };
 
+
 function getMin(countries, year,varName) {
     var min;
     for (var country in countries)    {
@@ -29,7 +33,21 @@ function getMin(countries, year,varName) {
 };
 
 
-function LoadMap(varName,year)
+function changeYear(xYear)
+{
+	year = xYear;
+	$('#btnYear').text(xYear);
+	LoadMap();
+}
+
+function changeVar(xVar)
+{
+	varName = xVar;
+	$('#btnVar').text(data.seriesDetails[xVar].desc);
+	LoadMap();
+}
+
+function LoadMap()
 {
 	var max = getMax(data.Countries,year,varName);
 	var min = getMin(data.Countries,year,varName);
@@ -42,15 +60,7 @@ function LoadMap(varName,year)
 			$('#' +d).css('fill',getColorFromValue(val,dom,cols));
 		}
     );
-	//		var states = d3.selectAll('#mapGroup')
-		//		.data(data.Countries, function (d) {
-			//		return d.ID;
-//})
-	//			.style('fill',function(d,i) {return(getColorFromValue(d[year][varName])); })
-			
-
-}
-
+};
 
 function TransformZoom(s,ZoomName){
 
@@ -58,10 +68,6 @@ function TransformZoom(s,ZoomName){
 	
 	if(ZoomName != 'Zoom Out')
 		{
-			//$('.dropdown-content').css('display','none')
-			//$('.dropdown:hover .dropdown-content').css('display','block')
-			//$('.dropdown-content').hide();
-			//$('.dropdown-content').attr('style','')
 			$('#zoomBtn').text(ZoomName);
 			$('#zoomOutBtn').css('display','inline-block');
 		}
@@ -70,40 +76,5 @@ function TransformZoom(s,ZoomName){
 			$('#zoomBtn').text('Zoom to')
 			$('#zoomOutBtn').css('display','none')
 		}
-}
+};
  
-
-function ZoomSouthAmerica()
-{
-	TransformZoom('translate(-400,-1200) scale(3,3)', 'South America');
-}
-
-function ZoomMiddleEast()
-{
-	TransformZoom('translate(-2500,-1450) scale(5,5)', 'Middle East');
-}
-
-function ZoomAsiaSouth()
-{
-	TransformZoom('translate(-1850,-1100) scale(3,3)','Indian Ocean');
-}
-
-function ZoomAsiaNorth()
-{
-	TransformZoom('translate(-1400,-300) scale(2.5,2.5)','North Asia');
-}
-
-function ZoomEurope()
-{
-	TransformZoom('translate(-2000,-1150) scale(5,5)');
-}
-
-function ZoomNorthAmerica()
-{
-	TransformZoom('translate(150,-150) scale(2,2)');
-}
-
-function ZoomWorld()
-{
-	TransformZoom('translate(0,0) scale(1,1)','Zoom Out');
-}

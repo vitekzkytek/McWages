@@ -80,9 +80,25 @@
 }
 
 #ZoomOutBtn {
+/* 	position:absolute;
+	left: 100px; */
 	display: none;
 }
 
 #ZoomOutBtn:hover {
 	background-color: rgba(245,128,37,1)
+}
+
+#divYear {
+	position: absolute;
+	right:20px;	
+}
+
+#divVar {
+	position: absolute;
+	left:300px;
+}
+
+#controls {
+	width:585px;
 }

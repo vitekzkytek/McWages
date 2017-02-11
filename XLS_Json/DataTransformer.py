@@ -33,10 +33,6 @@ with open(infofile) as f2:
         countries[id]['Population'] = row['Population']
         countries[id]['FXrate'] = row['Fxrate']
 
-def getMax(dict):
-    import operator
-#    stats = {'a': 1000, 'b': 3000, 'c': 100}
-    max(dict.iteritems(), key=operator.itemgetter(1))[0]
 
 
 dataDict = {}
@@ -46,10 +42,10 @@ dataDict['seriesDetails']['McWages'] = {}
 dataDict['seriesDetails']['BMPH'] = {}
 dataDict['seriesDetails']['BigMacPrice'] = {}
 dataDict['seriesDetails']['McWages_PPP'] = {}
-dataDict['seriesDetails']['McWages']['desc'] = 'Desc of variable McWages'
-dataDict['seriesDetails']['BMPH']['desc'] = 'Desc of variable BMPH'
-dataDict['seriesDetails']['BigMacPrice']['desc'] = 'Desc of variable BigMacPrice'
-dataDict['seriesDetails']['McWages_PPP']['desc'] = 'Desc of variable McWages_PPP'
+dataDict['seriesDetails']['McWages']['desc'] = 'McWages (USD)'
+dataDict['seriesDetails']['BMPH']['desc'] = 'Big Macs per hour (USD)'
+dataDict['seriesDetails']['BigMacPrice']['desc'] = 'Big Mac Price (USD)'
+dataDict['seriesDetails']['McWages_PPP']['desc'] = 'McWages (PPP)'
 
 
 

@@ -1,10 +1,9 @@
 
-//ToDo - DDL pro year a variable,tooltip, dat na github, doladeni hoveru, handling NAs, PRIDEJ HONKKONG, SINGAPUR mozna brunei, 
+//ToDo - tooltip, doladeni hoveru, handling NAs, PRIDEJ HONKKONG, SINGAPUR mozna brunei, 
 // v mape uplne chybi Bahrain, musim ho dokreslit - vzhledem k tomu, ze to ani nespadlo, tak to asi budu muset zkontrolovat		
 
 var year = 2016;
 var varName = 'BMPH'
-
 
 function getColorFromValue(val,dom,cols)
 {
@@ -60,6 +59,7 @@ function LoadMap()
 			$('#' +d).css('fill',getColorFromValue(val,dom,cols));
 		}
     );
+	handleEvents();
 };
 
 function TransformZoom(s,ZoomName){
@@ -77,4 +77,44 @@ function TransformZoom(s,ZoomName){
 			$('#zoomOutBtn').css('display','none')
 		}
 };
- 
+
+//define tooltip
+
+
+function handleEvents()
+{
+	var tooltip = d3.select("body").append("div")
+	.attr("class","tooltip")
+	.style("opacity",0);
+	
+	g = d3.selectAll('.state')
+		.on('mouseover', function() {
+			if (data.Countries.hasOwnProperty(this.id)){
+			tooltip.transition()
+				.duration(200)
+				.style('opacity',0.9);
+			tooltip.html(getTooltipText(this.id))
+			}})
+		.on('mouseout',function(){
+			if (data.Countries.hasOwnProperty(this.id)){
+			tooltip.transition()
+			.duration(500)
+			.style('opacity',0);
+			}})
+		.on('mousemove',function(){
+			if (data.Countries.hasOwnProperty(this.id)){			
+			tooltip
+				.style('left', d3.event.pageX + 'px')
+				.style('top',(d3.event.pageY - 28) + 'px')
+			}});
+};
+
+function getTooltipText(el){
+	if (data.Countries.hasOwnProperty(el)){
+		var s = "<b>" + data.Countries[el].FullName + "</b>";
+	}
+	else {
+		s = 'no data'
+	}
+	return s
+}

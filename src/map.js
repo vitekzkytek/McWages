@@ -1,7 +1,5 @@
 
-//ToDo - doladeni hoveru, doladeni tooltip textu, handling NAs, PRIDEJ HONKKONG, SINGAPUR mozna brunei, 
-// v mape uplne chybi Bahrain, musim ho dokreslit - vzhledem k tomu, ze to ani nespadlo, tak to asi budu muset zkontrolovat		
-
+//ToDo - doladeni hoveru, doladeni tooltip textu
 var year = 2016;
 var varName = 'BMPH'
 

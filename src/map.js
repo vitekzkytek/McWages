@@ -44,6 +44,14 @@ function changeVar(xVar)
 
 function LoadMap()
 {
+	var zoom = d3.zoom()
+	.scaleExtent([1, 5])
+	.on("zoom", zoomed);
+	
+	var svg = d3.select("#gContainer").call(zoom)
+
+
+	
 	var max = getMax(data.Countries,year,varName);
 	var min = getMin(data.Countries,year,varName);
 	dom = [min,max]
@@ -66,10 +74,18 @@ function LoadMap()
 	handleEvents();
 };
 
+
+
+function zoomed() {
+	  d3.select('#gContainer').attr("transform", d3.event.transform);
+	};
+
+
+
 function TransformZoom(s,ZoomName){
 
-	g = d3.select('#mapGroup').transition().duration(750).attr('transform',s);
-	
+	//g = d3.select('#mapGroup').transition().duration(750).attr('transform',s);
+	g = d3.select('#gContainer').transition().duration(750).attr('transform',s);
 	if(ZoomName != 'Zoom Out')
 		{
 			$('#zoomBtn').text(ZoomName);

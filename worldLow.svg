@@ -38,13 +38,13 @@
      inkscape:window-height="986"
      id="namedview194"
      showgrid="false"
-     inkscape:zoom="7.63"
-     inkscape:cx="812.81557"
-     inkscape:cy="-335.45216"
+     inkscape:zoom="21.580899"
+     inkscape:cx="641.65897"
+     inkscape:cy="-303.23571"
      inkscape:window-x="-11"
      inkscape:window-y="-11"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg192" />
+     inkscape:current-layer="g190" />
   <defs
      id="defs12">
     <style
@@ -951,10 +951,34 @@
        inkscape:connector-curvature="0"
        class="land"
        title="Hong Kong" />
+    <path
+       id="SG"
+       d="m 781.71691,439.12189 h 8.78112 v 9.04325 h -8.78112 z"
+       inkscape:connector-curvature="0"
+       class="land"
+       title="Hong Kong"
+       style="fill:#cccccc;fill-opacity:1;stroke:#ffffff;stroke-width:0.5;stroke-opacity:1" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 831.97903,406.68414 H 795.93709 L 795.32,399.85"
+       id="HK-line"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px"
+       d="m 767.55,458.84 14.16691,-10.67486"
+       id="SG-line"
+       inkscape:connector-curvature="0" />
+    <path
+       id="BH"
+       d="m 648.96605,410.01513 h 8.78112 v 9.04325 h -8.78112 z"
+       inkscape:connector-curvature="0"
+       class="land"
+       title="Bahrain"
+       style="fill:#cccccc;fill-opacity:1;stroke:#ffffff;stroke-width:0.5;stroke-opacity:1" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:2.04702449px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 617.23111,389.37771 31.73494,20.63742"
+       id="BH-line"
+       inkscape:connector-curvature="0" />
   </g>
-  <path
-     style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-     d="M 831.97903,406.68414 H 795.93709 L 795.32,399.85"
-     id="HK-line"
-     inkscape:connector-curvature="0" />
 </svg>

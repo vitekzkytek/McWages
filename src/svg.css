@@ -3,7 +3,8 @@
   width: 600px;
   height:400px;
   margin:auto;
-  margin-top:20px;
+  margin-top:7px;
+  margin-bottom:7px;
 }
 
 /* rectangle allowing for handling events outside standard svg state elements*/
@@ -39,25 +40,30 @@
 .tooltip {
 	font-size: 1.3rem;
 }
-#tltp {
-	height:30px;
-	margin-bottom:5px;
-}
-.tooltip {
-	width:600px;
+
+#svgLegend {
 	position:relative;
-	left:50%;
-
+	top:0px;
+	height:40px;
 }
 
-/* div.tooltip {
+#svgMap {
+	width:600px;
+	height:400px;
+}
+
+#rectGradient {
+	left:150px;
+}
+
+div.tooltipfloat {
   position: absolute;
   text-align: center;
   padding: 2px;
-  font: 12px sans-serif;
+  font-size:1.4rem;
   background: #D1D4D3;
   border: 0px;
   border-radius: 4px;
   pointer-events: none;
   padding:4px;
-} */
+}

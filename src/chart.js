@@ -1,7 +1,6 @@
 //TODO 
 //    - Tooltip - bud 2 moznosti nebo se pro jednu rozhodnout + fix erroru pri zmene rozliseni
 //    - Gradient - uplne celej, vcetne tri konkretnich navrhu
-
 //    - TextBox pod mapou - pohrat si s malymi burgry neco neco takoveho? 
 //    - zpresni zoomovaci transformace
 //    - opravit panning a zooming po zoomu s tlacitkem
@@ -10,32 +9,49 @@
 //MAIN DEFINITIONS
 var year = 2016;
 var varName = 'BMPH';
-var variantSelect = '"rete';
+var variantSelect = 'discrete';
 var colorSelect = 'GreenOrange';
-var domRanges =  {
-	"BMPH": [[0,0.20],[0.20,0.40],[0.40,0.60],[0.60,0.80],[0.80,1]],
-	"McWages":[[0,20],[20,40],[40,60],[60,80],[80,100]],
-	"McWages_PPP":[[0,20],[20,40],[40,60],[60,80],[80,100]],
-	"BigMacPrice": [[0,20],[20,40],[40,60],[60,80],[80,100]]
-}
-//var colRange = ['#BBBB88','#CCC68D','#EEDD99','#EEC290','#EEAA88'];//A7DBD8 96ddeb f38630
-var legendText = ['< 0.2', '0.2 - 0.4','0.4 - 0.6','0.6 - 0.8','> 0.8'];
-var transitionCols = ['#69D2E7','#FA6900'];
+
+
+var legendProperties = {
+		"texts" : {
+				"gradient" : { "BMPH" : ['0','0.2','0.4','0.6','0.8','1'],
+							   "McWages" : ['0','20','40','60','80','100'],
+							   "McWages_PPP" : ['0','20','40','60','80','100'],
+							   "BigMacPrice" : ['0','20','40','60','80','100']
+								},
+				"discrete" : { "BMPH" : ['< 0.2', '0.2 - 0.4','0.4 - 0.6','0.6 - 0.8','> 0.8'],
+							   "McWages" : ['< 20', '20 - 40','40 - 60','60 - 80','> 80'],
+							   "McWages_PPP" : ['< 20', '20 - 40','40 - 60','60 - 80','> 80'],
+							   "BigMacPrice" : ['< 20', '20 - 40','40 - 60','60 - 80','> 80']
+								}
+					},
+		"minmax" : {
+				"BMPH" : [0,1],
+				"McWages" : [0,100],
+				"McWages_PPP":[0,100],
+				"BigMacPrice" : [0,100]
+		},
+		"colors" : {
+			"discrete" : {
+				"GreenOrange" : ['#75995A',"#AAC92D","#E0D819","#EEBB11","#FD9B08"],
+				"BlueOrange" : ["#69D2E7","#9fe7f5","#E0E4CC","#F38630","#FA6900"],
+				"LightGreenOrange" : ["#BBBB88","#CCC68D","#EEDD99","#EEC290","#EEAA88"]
+				},
+			"gradient" : {	
+				"GreenOrange" : ['#75995A','#90B144',"#AAC92D",'#C5D123',"#E0D819","#E7CA15","#EEBB11",'#F6AB0D',"#FD9B08"],
+				"BlueOrange" : ["#69D2E7",'#84DDEE',"#9fe7f5",'#C0E6E1',"#E0E4CC",'#EAB57E',"#F38630",'#F77818',"#FA6900"],
+				"LightGreenOrange" : ["#BBBB88",'#C4C18B',"#CCC68D",'#DDD293',"#EEDD99",'#EED095',"#EEC290",'#EEB68C',"#EEAA88"]
+				}
+			}
+		};
+
 var max;	
 var min;
-var discretes = {
-		"GreenOrange" : ['#75995A',"#AAC92D","#E0D819","#EEBB11","#FD9B08"],
-		"BlueOrange" : ["#69D2E7","#9fe7f5","#E0E4CC","#F38630","#FA6900"],
-		"LightGreenOrange" : ["#BBBB88","#CCC68D","#EEDD99","#EEC290","#EEAA88"]
-}
+var colorScale;
+var tooltipfloat;
 
-var gradients = {
-		
-}
-
-
-
-//CONTROLLING VARIANTS AND VARIABLES
+// CONTROLLING VARIANTS AND VARIABLES
 
 function changeVariant(variant,colors,id)
 {
@@ -62,27 +78,59 @@ function changeVar(xVar)
 	LoadMap();
 }
 
-//MAIN LOADING FUNCTION
-function LoadMap(version)
+// MAIN LOADING FUNCTION
+function LoadMap()
 {
-	max = getMax(data.Countries,year,varName);
-	min = getMin(data.Countries,year,varName);
+	max = legendProperties.minmax[varName][1];
+	min = legendProperties.minmax[varName][0];
+	
 	var zoom = d3.zoom()
 	.scaleExtent([1, 5])
 	.on("zoom", zoomed);
-	
+		
 	var svg = d3.select("#gContainer").call(zoom)
 
 	$('.ActiveState').removeClass('ActiveState');
+	$('#linear-gradient').remove();
 
+	if( variantSelect == 'gradient') {
+		var linearGradient = d3.select('#defs').append('linearGradient').attr('id','linear-gradient');
+		
+		linearGradient // mozna ze y ma byt 50 %, podle obrazku v blogu
+					.attr('x1','0%')
+					.attr('y1','0%')
+					.attr('x2','100%')
+					.attr('y2','0%');
+		
+		colorScale = d3.scaleLinear().range(legendProperties.colors.gradient[colorSelect])
+		linearGradient.selectAll('stop')
+				.data(colorScale.range())
+				.enter()
+				.append('stop')
+				.attr('offset',function(d,i) {return i/(colorScale.range().length-1);} )
+				.attr('stop-color',function(d) {return d; });
+	}
+	
+	var colorCont;
+	var rangeCont;
+	if (variantSelect == 'gradient')
+	{
+		colorCont = legendProperties.colors.gradient[colorSelect];
+		rangeCont = generateDomRange(legendProperties.colors.gradient[colorSelect]);
+	}
+	else 
+	{
+		colorCont = legendProperties.colors.discrete[colorSelect];
+		rangeCont = generateDomRange(legendProperties.colors.discrete[colorSelect]);
+	}
 	
 	$.each(data.Countries,function(d)
 		{
-						val = this[year][varName]
+			var val = this[year][varName];
 			if(val != 'NA')
 				{
-					$('#' +d).css('fill',getColorFromValue(val));					
-					$('#' + d).addClass('ActiveState')
+					$('#' +d).css('fill',ValToCol(val,colorCont,rangeCont));					
+					$('#' + d).addClass('ActiveState');
 
 				}
 			else
@@ -94,81 +142,84 @@ function LoadMap(version)
 	handleEvents();
 	drawLegend();
 };
-//HELPING FUNCTIONS - COLORS
-function getColorFromValue(val,dom)
-{
-	var colorScale;
-	
-	if (variantSelect == 'gradient') {
-		colorScale = d3.scaleLinear().domain([min,max]).range(transitionCols).interpolate(d3.interpolateHcl);
-		return colorScale(val);
-	}
-	else {
-		return ValToCol(val);
-	}
-	
-};
+// HELPING FUNCTIONS - COLORS
 
-function ValToCol(val)
+function ValToCol(val,colorCont,rangeCont)
 {
 	var result = '';
-	for (i =0; i < 5; i++)
+	
+
+	for (i =0; i < rangeCont.length; i++)
 		{
-			if((val >= domRanges[varName][i][0]) && (val < domRanges[varName][i][1]))
+			if((val >= rangeCont[i][0]) && (val < rangeCont[i][1]))
 				{
-					result = discretes[colorSelect][i];
+					result = colorCont[i];
 					break;
 				}
 		}
 	return result;	
 };
 
-//MAX-MIN
-function getMax(countries, year,varName) {
-    var max;
-    for (var country in countries)    {
-    	if (!max || parseFloat(countries[country][year][varName]) > max)
-    		{max = parseFloat(countries[country][year][varName])}
-    }
-    return max;
-};
-
-function getMin(countries, year,varName) {
-    var min;
-    for (var country in countries)    {
-    	if (!min || parseFloat(countries[country][year][varName]) < min)
-    		{min = parseFloat(countries[country][year][varName])}
-    }
-    return min;
-};
-
+function generateDomRange(colorCont)
+{
+	var result = [];
+	var inter = (max-min)/colorCont.length;
+	var last = min;
+	for( i = 0; i < colorCont.length; i++)
+		{
+			result.push([last, min + (i+1) * inter]);
+			last = min + (i+1) * inter;
+			
+		}
+	return result;
+}
 
 function drawLegend()
 {
 	d3.select("#svgLegend").selectAll("*").remove();
-	d3.select('#svgLegend')
-		.append('text')
+	var svgLegend = d3.select('#svgLegend');
+		svgLegend.append('text')
 		.attr('class','legend-text')
 		.attr('y','18px')
 		.text(data.seriesDetails[varName].desc)
-		
+
 	var colors;
 	var texts;
 	
 	if(variantSelect == 'gradient')
-		{
-			colors = [min,max].map(getColorFromValue)
-			texts = ['0','1']
+		{	
+			rectWidth = 300;
+			svgLegend.append('rect')
+				.attr('id','rectGradient')
+				.attr('width',rectWidth)
+				.attr('height',10)
+				.attr('x',180)
+				.attr('y',9)
+				.style('fill','url(#linear-gradient)');
+			
+			texts = legendProperties.texts.gradient[varName]
+			
+			interval = rectWidth /(texts.length-1)
+			svgLegend.selectAll('g')
+				.data(texts)
+				.enter()
+				.append('text')
+				.attr('class','legend-text')
+				.attr('x',function (d,i) { return 180 + i * interval; })
+				.attr('y',35)
+				.attr('text-anchor','middle')
+				.text(function (d) {return d;})
 		}
 	else 
 		{
-			colors = discretes[colorSelect];
-			texts = legendText
-		}
+			colors = legendProperties.colors.discrete[colorSelect];
+			texts = legendProperties.texts.discrete[varName];
+		
 	
 		  var legend = d3.select('#svgLegend').selectAll(".legend")
 		  				.data(colors)
-		  				.enter().append("g")
+		  				.enter()
+		  				.append("g")
 		  				.attr("class", "legend")
 		  				.attr("transform", function(d, i) { return "translate(" + i * 100 + ",5)"; });
 		
@@ -184,6 +235,7 @@ function drawLegend()
 			      .attr('class','legend-text')
 			      .style("text-anchor", "end")
 			      .text(function(d,i) {return texts[i]; })
+		}
 };
 
 function zoomed() {
@@ -196,40 +248,45 @@ function TransformZoom(s,ZoomName){
 	g = d3.select('#gContainer').transition().duration(750).attr('transform',s);
 	if (ZoomName != 'Zoom Out')
 		{
-			$('#btnZoom').text(ZoomName);
+			$('#btnZoom').html(ZoomName  +    '  <img src="src/down-arrow.png" class="menu-icon" />');
 			$('#divZoomOut').css('display','inline-block');
 		}
 	else 
 		{
-			$('#btnZoom').text('Zoom to')
+			$('#btnZoom').html('Zoom to  ' +  '<img src="src/down-arrow.png" class="menu-icon" />')
 			$('#divZoomOut').css('display','none')
 		}
 };
 
 function handleEvents()
 {
-	if ($('.tooltip').length) {
-		tooltip = d3.select('.tooltip')	
-	}
-	else {
-	var tooltip = d3.select("#tltp").append("div")
-	.attr("class","tooltip")
-	.style("opacity",0);
-	}
-	g = d3.selectAll('.state')
-		.on('mouseover', function() {
-			if (data.Countries.hasOwnProperty(this.id)){
-			tooltip.transition()
-				.duration(200)
-				.style('opacity',0.9);
-			tooltip.html(getTooltipText(this.id))
-			}})
-		.on('mouseout',function(){
-			if (data.Countries.hasOwnProperty(this.id)){
-			tooltip.transition()
-			.duration(500)
-			.style('opacity',0);
-			}});
+	d3.select('#tooltip').selectAll("*").remove();
+			div = d3.select('#tltpflt')
+			tooltip = d3.select('body').append('div')
+				.attr('class','tooltipfloat')
+				.style('opacity',0);
+			
+			g = d3.selectAll('.state')
+				.on('mouseover', function () {
+					if (data.Countries.hasOwnProperty(this.id)){
+							tooltip.transition()
+							.duration(200)
+							.style('opacity',0.85);
+							tooltip.html(getTooltipText(this.id))
+					}})
+				.on('mouseout',function(){
+					if (data.Countries.hasOwnProperty(this.id)){
+							tooltip.transition()
+							.duration(500)
+							.style('opacity',0);
+					}})
+				.on('mousemove',function(){
+		 			if (data.Countries.hasOwnProperty(this.id)){			      
+			 				tooltip
+			 				.style('left', d3.event.pageX + 'px')
+			 				.style('top',(d3.event.pageY - 28) + 'px');
+		 			}});
+
 
 };
 

@@ -37,19 +37,26 @@ body {
 	color: #4F4F4F;
 }
 
-
-
 /* DROPDOWN MENU */
-.controls {
-	display:inline-block;
+#controls {
+	display:block;
+	text-align:center;
+	height:20px;
+	width:600px;
+	margin-top:30px;
+}
+#menu {
+	height:20px;
 }
 .dropdiv {
 	display:inline-block;	
 	background-color:transparent;
+	position:absolute;
 }
 
 .dropbtn {
 	display:inline-block;
+	min-width: 100px;
 	background-color: transparent;
 	font-size:1.3rem;
 	font-weight:300;
@@ -66,7 +73,7 @@ body {
 	display: none;
     position: absolute;
     background-color: #f9f9f9;
-    min-width: 75px;
+    min-width: 100px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
 }
@@ -93,3 +100,43 @@ body {
 .dropdiv:hover .dropbtn {
     font-weight:600;
 }
+
+/*POSITIONING MENU CONTROLS */
+
+#divZoom {
+	left:50%;
+	margin-left:-318px;
+}
+
+#divZoomOut {
+	left:50%;
+	margin-left:-220px;
+	display:none;
+}
+
+#zoomOutBtn:hover {
+	font-weight:600;
+}
+
+#divVar {
+	left:50%;
+	margin-left:40px;
+}
+
+#divYear {
+	left:50%;
+	margin-left:220px;	
+}
+
+
+
+
+
+/*
+	width:600px;
+	display:block;
+
+
+ 
+	left:50%;
+	top:5px; */

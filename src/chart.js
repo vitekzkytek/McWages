@@ -1,8 +1,7 @@
 //TODO 
-//    - Tooltip - bud 2 moznosti nebo se pro jednu rozhodnout + fix erroru pri zmene rozliseni
-//    - Gradient - uplne celej, vcetne tri konkretnich navrhu
+
 //    - TextBox pod mapou - pohrat si s malymi burgry neco neco takoveho? 
-//    - zpresni zoomovaci transformace
+//    - zkonotrolovat nakolik barvy skutecne odpovidaji hodnotam
 //    - opravit panning a zooming po zoomu s tlacitkem
 
 

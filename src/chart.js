@@ -1,11 +1,9 @@
 //TODO 
-//    - Tooltip - bud 2 moznosti nebo se pro jednu rozhodnout + v Evrope se zobrazuje velmi nizko
+//    - Tooltip - bud 2 moznosti nebo se pro jednu rozhodnout + fix erroru pri zmene rozliseni
 //    - Gradient - uplne celej, vcetne tri konkretnich navrhu
-//    - Dokoncit Zoom menu - stabilni pozice hlavne dukladne otestovat
-//    - ZoomOut hover nefunguje
+
 //    - TextBox pod mapou - pohrat si s malymi burgry neco neco takoveho? 
-//    - nefunguji jine promenne nez BMPH
-//    - zpresni zoomovani
+//    - zpresni zoomovaci transformace
 //    - opravit panning a zooming po zoomu s tlacitkem
 
 
@@ -198,22 +196,26 @@ function TransformZoom(s,ZoomName){
 	g = d3.select('#gContainer').transition().duration(750).attr('transform',s);
 	if (ZoomName != 'Zoom Out')
 		{
-			$('#zoomBtn').text(ZoomName);
+			$('#btnZoom').text(ZoomName);
 			$('#divZoomOut').css('display','inline-block');
 		}
 	else 
 		{
-			$('#zoomBtn').text('Zoom to')
+			$('#btnZoom').text('Zoom to')
 			$('#divZoomOut').css('display','none')
 		}
 };
 
 function handleEvents()
 {
+	if ($('.tooltip').length) {
+		tooltip = d3.select('.tooltip')	
+	}
+	else {
 	var tooltip = d3.select("#tltp").append("div")
 	.attr("class","tooltip")
 	.style("opacity",0);
-	
+	}
 	g = d3.selectAll('.state')
 		.on('mouseover', function() {
 			if (data.Countries.hasOwnProperty(this.id)){

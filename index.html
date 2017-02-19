@@ -40,14 +40,16 @@
 					Zoom to <img src="src/down-arrow.png" class="menu-icon" />
 				</button>
 				<div class="dropdown-content">
-					<a href="javascript:void(0);" onclick="TransformZoom('translate(-400,-1200) scale(3,3)', 'South America');">South America</a> 
-					<a href="javascript:void(0);" onclick="TransformZoom('translate(-2500,-1450) scale(5,5)', 'Middle East');">Middle East</a> 
-					<a href="javascript:void(0);" onclick="TransformZoom('translate(-1850,-1100) scale(3,3)','Indian Ocean');">Indian Ocean</a> 
-					<a href="javascript:void(0);" onclick="TransformZoom('translate(-1400,-300) scale(2.5,2.5)','North Asia');">North Asia</a> <a href="javascript:void(0);" onclick="TransformZoom('translate(-2000,-1150) scale(5,5)','Europe');">Europe</a> <a href="javascript:void(0);" onclick="TransformZoom('translate(150,-150) scale(2,2)','North America');">North America</a>
+					<a href="javascript:void(0);" onclick="TransformZoom(-400,-1200,3,'South America');">South America</a> 
+					<a href="javascript:void(0);" onclick="TransformZoom(-2500,-1450,5,'Middle East');">Middle East</a> 
+					<a href="javascript:void(0);" onclick="TransformZoom(-1850,-1100,3,'Indian Ocean');">Indian Ocean</a> 
+					<a href="javascript:void(0);" onclick="TransformZoom(-1400,-300,2.5,'North Asia');">North Asia</a> 
+					<a href="javascript:void(0);" onclick="TransformZoom(-2000,-1150,5,'Europe');">Europe</a> 
+					<a href="javascript:void(0);" onclick="TransformZoom(150,-150,2,'North America');">North America</a>
 				</div>
 			</div>
 			<div id="divZoomOut" class="dropdiv">
-				<button id="zoomOutBtn" class="dropbtn" onclick="TransformZoom('translate(0,0) scale(1,1)','Zoom Out');">Zoom Out</button>
+				<button id="zoomOutBtn" class="dropbtn" onclick="TransformZoom(0,0,1,'Zoom Out');">Zoom Out</button>
 			</div>
 			<div id="divVar" class="dropdiv">
 				<button id="btnVar" class="dropbtn">Big Macs per hour (USD) <img src="src/down-arrow.png" class="menu-icon" />

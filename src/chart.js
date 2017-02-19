@@ -3,7 +3,7 @@
 //    - TextBox pod mapou - pohrat si s malymi burgry neco neco takoveho? 
 //    - zkonotrolovat nakolik barvy skutecne odpovidaji hodnotam
 //    - opravit panning a zooming po zoomu s tlacitkem
-
+//    - optimize broswers (mainly zooming out of state elements)
 
 //MAIN DEFINITIONS
 var year = 2016;
@@ -49,6 +49,8 @@ var max;
 var min;
 var colorScale;
 var tooltipfloat;
+var zoomTransform;
+var fZoom;
 
 // CONTROLLING VARIANTS AND VARIABLES
 
@@ -80,14 +82,17 @@ function changeVar(xVar)
 // MAIN LOADING FUNCTION
 function LoadMap()
 {
+	d3.select('#svgMap').attr("overflow", "hidden");
+
 	max = legendProperties.minmax[varName][1];
 	min = legendProperties.minmax[varName][0];
 	
-	var zoom = d3.zoom()
+	fZoom = d3.zoom()
 	.scaleExtent([1, 5])
 	.on("zoom", zoomed);
+	
 		
-	var svg = d3.select("#gContainer").call(zoom)
+	var svg = d3.select("#gContainer").call(fZoom)
 
 	$('.ActiveState').removeClass('ActiveState');
 	$('#linear-gradient').remove();
@@ -146,7 +151,6 @@ function LoadMap()
 function ValToCol(val,colorCont,rangeCont)
 {
 	var result = '';
-	
 
 	for (i =0; i < rangeCont.length; i++)
 		{
@@ -156,6 +160,7 @@ function ValToCol(val,colorCont,rangeCont)
 					break;
 				}
 		}
+	
 	return result;	
 };
 
@@ -238,13 +243,28 @@ function drawLegend()
 };
 
 function zoomed() {
-	  d3.select('#gContainer').attr("transform", d3.event.transform);
+	g = d3.select('#gContainer');
+		d3.zoomIdentity = d3.zoomTransform(g.node());
+	
+	  g.attr("transform", d3.event.transform);
 	};
 
 
 
-function TransformZoom(s,ZoomName){
+function TransformZoom(X,Y,k,ZoomName){
+	//	var g = d3.select('#gContainer');
+	//	var t = g.transition().duration(750);
+	//
+
+	s = 'translate(' + X + ',' + Y +') scale (' + k +')';
 	g = d3.select('#gContainer').transition().duration(750).attr('transform',s);
+
+	z = d3.zoomTransform(g.node());
+	z.k = k;
+	z.y = Y;
+	z.x = X;
+	
+
 	if (ZoomName != 'Zoom Out')
 		{
 			$('#btnZoom').html(ZoomName  +    '  <img src="src/down-arrow.png" class="menu-icon" />');
@@ -255,6 +275,8 @@ function TransformZoom(s,ZoomName){
 			$('#btnZoom').html('Zoom to  ' +  '<img src="src/down-arrow.png" class="menu-icon" />')
 			$('#divZoomOut').css('display','none')
 		}
+	fZoom.transform("",z);
+
 };
 
 function handleEvents()

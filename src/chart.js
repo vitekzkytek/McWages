@@ -8,7 +8,7 @@
 //MAIN DEFINITIONS
 var year = 2016;
 var varName = 'BMPH';
-var variantSelect = 'discrete';
+var variantSelect = 'gradient';
 var colorSelect = 'GreenOrange';
 
 

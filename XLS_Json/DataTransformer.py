@@ -16,6 +16,7 @@ with open(inputfile) as f:
         d['BMPH'] = row['BMPH'].replace(',','.')
         d['BigMacPrice'] = row['big_mac_price'].replace(',','.')
         d['McWages_PPP'] = row['mc_Wages_PPP'].replace(',','.')
+        d['MinWage'] = row['MinWage']
         if row['ID'] in countries:
             countries[id][row['year']] = d
         else:
@@ -42,11 +43,12 @@ dataDict['seriesDetails']['McWages'] = {}
 dataDict['seriesDetails']['BMPH'] = {}
 dataDict['seriesDetails']['BigMacPrice'] = {}
 dataDict['seriesDetails']['McWages_PPP'] = {}
+dataDict['seriesDetails']['MinWage'] = {}
 dataDict['seriesDetails']['McWages']['desc'] = 'McWages (USD)'
 dataDict['seriesDetails']['BMPH']['desc'] = 'Big Macs per hour (USD)'
 dataDict['seriesDetails']['BigMacPrice']['desc'] = 'Big Mac Price (USD)'
 dataDict['seriesDetails']['McWages_PPP']['desc'] = 'McWages (PPP)'
-
+dataDict['seriesDetails']['MinWage']['desc'] = 'Is Minimum wage?'
 
 
 

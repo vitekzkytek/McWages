@@ -17,19 +17,22 @@ var legendProperties = {
 				"gradient" : { "BMPH" : ['0','0.2','0.4','0.6','0.8','1'],
 							   "McWages" : ['0','20','40','60','80','100'],
 							   "McWages_PPP" : ['0','20','40','60','80','100'],
-							   "BigMacPrice" : ['0','20','40','60','80','100']
-								},
+							   "BigMacPrice" : ['0','20','40','60','80','100'],
+							   "MinWage" : ['No','Yes']
+							   								},
 				"discrete" : { "BMPH" : ['< 0.2', '0.2 - 0.4','0.4 - 0.6','0.6 - 0.8','> 0.8'],
 							   "McWages" : ['< 20', '20 - 40','40 - 60','60 - 80','> 80'],
 							   "McWages_PPP" : ['< 20', '20 - 40','40 - 60','60 - 80','> 80'],
-							   "BigMacPrice" : ['< 20', '20 - 40','40 - 60','60 - 80','> 80']
+							   "BigMacPrice" : ['< 20', '20 - 40','40 - 60','60 - 80','> 80'],
+							   "MinWage" : ['No','Yes']
 								}
 					},
 		"minmax" : {
 				"BMPH" : [0,1],
 				"McWages" : [0,100],
 				"McWages_PPP":[0,100],
-				"BigMacPrice" : [0,100]
+				"BigMacPrice" : [0,100],
+				"MinWage" : [0,1]
 		},
 		"colors" : {
 			"discrete" : {
@@ -151,10 +154,10 @@ function LoadMap()
 function ValToCol(val,colorCont,rangeCont)
 {
 	var result = '';
-
+	// TODO - ta druha nerovnost by tam byt nemela ale pak to nefunguje na extermnich hodnotach
 	for (i =0; i < rangeCont.length; i++)
 		{
-			if((val >= rangeCont[i][0]) && (val < rangeCont[i][1]))
+			if((val >= rangeCont[i][0]) && (val <= rangeCont[i][1]))
 				{
 					result = colorCont[i];
 					break;
@@ -219,6 +222,10 @@ function drawLegend()
 			colors = legendProperties.colors.discrete[colorSelect];
 			texts = legendProperties.texts.discrete[varName];
 		
+			if (varName == 'MinWage')
+				{
+				colors = [colors[0],colors[colors.length-1]];
+				}
 	
 		  var legend = d3.select('#svgLegend').selectAll(".legend")
 		  				.data(colors)
@@ -312,6 +319,23 @@ function handleEvents()
 };
 
 function getTooltipText(el){
-	var s = "<b>" + data.Countries[el].FullName + ":</b> " + Math.round(data.Countries[el][year][varName] * 10)/10 + " " + data.seriesDetails[varName].desc;
+	var s;
+	var isMinWage = data.Countries[el][year]['MinWage'];
+	if (varName == 'MinWage')
+		{
+			if (isMinWage == '1'){
+				s = "Workers get only minimum wage in McD in " + "<b>" + data.Countries[el].FullName + "</b>"
+			}
+			else {
+				s = "Workers get higher than minimum wage in McD in " + "<b>" + data.Countries[el].FullName + "</b>"
+			}
+		}
+	else {
+	s = "<b>" + data.Countries[el].FullName + ":</b> " + Math.round(data.Countries[el][year][varName] * 10)/10 + " " + data.seriesDetails[varName].desc;
+
+	if(isMinWage == '1') {
+		s = s +". Workers get local minimum wage. ";	
+		}
+	}
 	return s
 }
